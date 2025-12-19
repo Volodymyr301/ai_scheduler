@@ -84,14 +84,7 @@ class SignInPrompt extends StatelessWidget {
                             strokeWidth: 2,
                           ),
                         )
-                      : Image.network(
-                          'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                          width: 20,
-                          height: 20,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(Icons.login, size: 20);
-                          },
-                        ),
+                      : const Icon(Icons.g_mobiledata, size: 24),
                   label: Text(
                     isLoading ? 'Вхід...' : 'Увійти через Google',
                     style: GoogleFonts.inter(
@@ -188,14 +181,7 @@ void showSignInDialog(BuildContext context, {String? message}) {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : Image.network(
-                                'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                                width: 20,
-                                height: 20,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.login, size: 20);
-                                },
-                              ),
+                            : const Icon(Icons.g_mobiledata, size: 24),
                         label: Text(
                           isLoading ? 'Вхід...' : 'Увійти через Google',
                           style: GoogleFonts.inter(
