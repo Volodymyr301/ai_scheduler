@@ -56,6 +56,31 @@ class CalendarCubit extends Cubit<CalendarState> {
   void clear() {
     emit(const CalendarState.initial());
   }
+
+  Future<void> updateEvent(gcal.Event event) async {
+    try {
+      final updatedEvent = await _calendar.updateEvent(event);
+      
+      // Update the event in the current list
+      final updatedEvents = state.events.map((e) {
+        if (e.id == updatedEvent.id) {
+          return updatedEvent;
+        }
+        return e;
+      }).toList();
+
+      emit(state.copyWith(
+        status: CalendarStatus.loaded,
+        events: updatedEvents,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: CalendarStatus.failure,
+        error: e.toString(),
+      ));
+      rethrow;
+    }
+  }
 }
 
 

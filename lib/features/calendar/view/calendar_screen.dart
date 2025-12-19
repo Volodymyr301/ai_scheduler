@@ -7,6 +7,7 @@ import '../../voice/view/voice_input_screen.dart';
 import 'package:googleapis/calendar/v3.dart' as gcal;
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 enum EventFilter { all, today, week }
 
@@ -54,8 +55,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   bool get _isLoading {
     final state = context.read<CalendarCubit>().state;
-    return state.status == CalendarStatus.loading ||
-        state.status == CalendarStatus.loadingMore;
+    return state.status == CalendarStatus.loading || state.status == CalendarStatus.loadingMore;
   }
 
   bool get _hasMore {
@@ -79,8 +79,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           final start = e.start?.dateTime ?? e.start?.date;
           if (start == null) return false;
           final eventDate = DateTime(start.year, start.month, start.day);
-          return eventDate.isAtSameMomentAs(today) || 
-                 (eventDate.isAfter(today) && eventDate.isBefore(tomorrow));
+          return eventDate.isAtSameMomentAs(today) || (eventDate.isAfter(today) && eventDate.isBefore(tomorrow));
         }).toList();
       case EventFilter.week:
         final weekStart = now.subtract(Duration(days: now.weekday - 1));
@@ -110,11 +109,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 children: [
                   Text(
                     'Події',
-                    style: GoogleFonts.inter(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFFF8FAFC),
-                    ),
+                    style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w600, color: const Color(0xFFF8FAFC)),
                   ),
                   BlocBuilder<AuthenticationCubit, AuthenticationState>(
                     builder: (context, authState) {
@@ -211,9 +206,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     builder: (context, state) {
                       if (state.status == CalendarStatus.initial ||
                           (state.status == CalendarStatus.loading && state.events.isEmpty)) {
-                        return const Center(
-                          child: CircularProgressIndicator(color: Color(0xFF3B82F6)),
-                        );
+                        return const Center(child: CircularProgressIndicator(color: Color(0xFF3B82F6)));
                       }
 
                       if (state.status == CalendarStatus.failure && state.events.isEmpty) {
@@ -225,47 +218,46 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         );
                       }
 
-                  final filteredEvents = _filterEvents(state.events);
+                      final filteredEvents = _filterEvents(state.events);
 
-                  return RefreshIndicator(
-                    onRefresh: () => context.read<CalendarCubit>().loadUpcomingEvents(),
-                    color: const Color(0xFF3B82F6),
-                    backgroundColor: const Color(0xFF1E293B),
-                    child: filteredEvents.isEmpty
-                        ? ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            children: const [
-                              SizedBox(height: 200),
-                              Center(
-                                child: Text(
-                                  'Немає подій',
-                                  style: TextStyle(color: Color(0xFF94A3B8)),
-                                ),
-                              ),
-                            ],
-                          )
-                        : ListView.builder(
-                            controller: _scrollController,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 8),
-                            itemCount: filteredEvents.length + (state.hasMore && _selectedFilter == EventFilter.all ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index >= filteredEvents.length) {
-                                return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: CircularProgressIndicator(color: Color(0xFF3B82F6)),
+                      return RefreshIndicator(
+                        onRefresh: () => context.read<CalendarCubit>().loadUpcomingEvents(),
+                        color: const Color(0xFF3B82F6),
+                        backgroundColor: const Color(0xFF1E293B),
+                        child: filteredEvents.isEmpty
+                            ? ListView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                children: const [
+                                  SizedBox(height: 200),
+                                  Center(
+                                    child: Text('Немає подій', style: TextStyle(color: Color(0xFF94A3B8))),
                                   ),
-                                );
-                              }
+                                ],
+                              )
+                            : ListView.builder(
+                                controller: _scrollController,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(top: 8),
+                                itemCount:
+                                    filteredEvents.length +
+                                    (state.hasMore && _selectedFilter == EventFilter.all ? 1 : 0),
+                                itemBuilder: (context, index) {
+                                  if (index >= filteredEvents.length) {
+                                    return const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: CircularProgressIndicator(color: Color(0xFF3B82F6)),
+                                      ),
+                                    );
+                                  }
 
-                              final event = filteredEvents[index];
-                              return _EventListItem(event: event, index: index);
-                            },
-                          ),
-                    );
-                  },
-                );
+                                  final event = filteredEvents[index];
+                                  return _EventListItem(event: event, index: index);
+                                },
+                              ),
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -288,11 +280,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF3B82F6).withOpacity(0.4),
-                  blurRadius: 24,
-                  offset: const Offset(0, 8),
-                ),
+                BoxShadow(color: const Color(0xFF3B82F6).withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 8)),
               ],
             ),
             child: Material(
@@ -300,13 +288,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               child: InkWell(
                 onTap: () => VoiceInputScreen.show(context),
                 customBorder: const CircleBorder(),
-                child: const Center(
-                  child: Icon(
-                    Icons.mic,
-                    size: 24,
-                    color: Colors.white,
-                  ),
-                ),
+                child: const Center(child: Icon(Icons.mic, size: 24, color: Colors.white)),
               ),
             ),
           );
@@ -322,11 +304,7 @@ class _FilterChip extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _FilterChip({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
+  const _FilterChip({required this.label, required this.isSelected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -376,22 +354,20 @@ class _EventListItem extends StatelessWidget {
 
     final String timeText = isTimed ? _formatTime(start, end) : 'Весь день';
     final int minutesUntil = isTimed ? start.difference(DateTime.now()).inMinutes : 0;
-    
+
     // Перевірка чи подія не пізніше 3:00 наступного дня
     final now = DateTime.now();
     final tomorrow3am = DateTime(now.year, now.month, now.day + 1, 3, 0);
     final bool shouldShowTimeUntil = isTimed && minutesUntil > 0 && start.isBefore(tomorrow3am);
-    
+
     // Визначення чи подія сьогодні
     final today = DateTime(now.year, now.month, now.day);
     final eventDate = DateTime(start.year, start.month, start.day);
     final bool isToday = eventDate.isAtSameMomentAs(today);
-    
+
     // Форматування дати
-    final String dateText = isToday 
-        ? 'Сьогодні' 
-        : _formatDate(start);
-    
+    final String dateText = isToday ? 'Сьогодні' : _formatDate(start);
+
     // Різні кольори для checkbox
     final List<Color> checkboxColors = [
       const Color(0xFF3B82F6),
@@ -401,131 +377,124 @@ class _EventListItem extends StatelessWidget {
     ];
     final checkboxColor = checkboxColors[index % checkboxColors.length];
 
-    return Container(
-      constraints: const BoxConstraints(minHeight: 88),
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Checkbox circle
-          Container(
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: checkboxColor, width: 2),
+    return InkWell(
+      onTap: () {
+        context.push('/event-details', extra: event);
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 88),
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(20)),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Checkbox circle
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: checkboxColor, width: 2),
+              ),
             ),
-          ),
-          const SizedBox(width: 12),
-          // Event details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        event.summary ?? '(Без назви)',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFFF8FAFC),
+            const SizedBox(width: 12),
+            // Event details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          event.summary ?? '(Без назви)',
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFFF8FAFC),
+                          ),
                         ),
                       ),
-                    ),
-                    if (shouldShowTimeUntil) ...[
+                      if (shouldShowTimeUntil) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFEFF6FF),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            minutesUntil < 60 ? 'За ${minutesUntil} хв' : 'За ${(minutesUntil / 60).round()} год',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF3B82F6),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        timeText,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xFF94A3B8),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '•',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xFF64748B),
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEFF6FF),
-                          borderRadius: BorderRadius.circular(12),
+                          color: isToday ? const Color(0xFF3B82F6).withOpacity(0.1) : const Color(0xFF334155),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          minutesUntil < 60
-                              ? 'За ${minutesUntil} хв'
-                              : 'За ${(minutesUntil / 60).round()} год',
+                          dateText,
                           style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: const Color(0xFF3B82F6),
+                            color: isToday ? const Color(0xFF3B82F6) : const Color(0xFF94A3B8),
                           ),
                         ),
                       ),
                     ],
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      timeText,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF94A3B8),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '•',
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF64748B),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: isToday 
-                            ? const Color(0xFF3B82F6).withOpacity(0.1)
-                            : const Color(0xFF334155),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        dateText,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today_outlined, size: 16, color: Color(0xFF64748B)),
+                      const SizedBox(width: 6),
+                      Text(
+                        event.organizer?.displayName ?? 'Календар',
                         style: GoogleFonts.inter(
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: isToday 
-                              ? const Color(0xFF3B82F6)
-                              : const Color(0xFF94A3B8),
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xFF64748B),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today_outlined,
-                      size: 16,
-                      color: Color(0xFF64748B),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      event.organizer?.displayName ?? 'Календар',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xFF64748B),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

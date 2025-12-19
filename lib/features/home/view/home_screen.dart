@@ -7,6 +7,7 @@ import '../../calendar/cubit/calendar_cubit.dart';
 import '../../voice/view/voice_input_screen.dart';
 import 'package:googleapis/calendar/v3.dart' as gcal;
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,13 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final tomorrow = today.add(const Duration(days: 1));
-    
+
     return events.where((e) {
       final start = e.start?.dateTime ?? e.start?.date;
       if (start == null) return false;
       final eventDate = DateTime(start.year, start.month, start.day);
-      return eventDate.isAtSameMomentAs(today) || 
-             (eventDate.isAfter(today) && eventDate.isBefore(tomorrow));
+      return eventDate.isAtSameMomentAs(today) || (eventDate.isAfter(today) && eventDate.isBefore(tomorrow));
     }).toList();
   }
 
@@ -59,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context, state) {
                         String greeting = 'Привіт!';
                         if (state.status == AuthenticationStatus.authenticated && state.user != null) {
-                          final userName = state.user!.displayName?.split(' ').first ?? 
-                                          state.user!.email.split('@').first;
+                          final userName =
+                              state.user!.displayName?.split(' ').first ?? state.user!.email.split('@').first;
                           greeting = 'Привіт, $userName';
                         }
                         return Text(
@@ -81,30 +81,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFF334155),
-                            width: 2,
-                          ),
+                          border: Border.all(color: const Color(0xFF334155), width: 2),
                         ),
                         child: ClipOval(
-                          child: state.status == AuthenticationStatus.authenticated && 
-                                 state.user?.photoUrl != null
+                          child: state.status == AuthenticationStatus.authenticated && state.user?.photoUrl != null
                               ? Image.network(
                                   state.user!.photoUrl!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(
-                                      Icons.person,
-                                      size: 20,
-                                      color: Color(0xFF94A3B8),
-                                    );
+                                    return const Icon(Icons.person, size: 20, color: Color(0xFF94A3B8));
                                   },
                                 )
-                              : const Icon(
-                                  Icons.person,
-                                  size: 20,
-                                  color: Color(0xFF94A3B8),
-                                ),
+                              : const Icon(Icons.person, size: 20, color: Color(0xFF94A3B8)),
                         ),
                       );
                     },
@@ -121,11 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     'Що плануємо сьогодні?',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF94A3B8),
-                    ),
+                    style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w500, color: const Color(0xFF94A3B8)),
                   ),
                   const SizedBox(height: 48),
                   // Microphone button
@@ -138,16 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         colors: [Color(0xFF8B5CF6), Color(0xFF3B82F6)],
                         center: Alignment.center,
                       ),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.1),
-                        width: 1,
-                      ),
+                      border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
                       boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF3B82F6).withOpacity(0.4),
-                          blurRadius: 40,
-                          spreadRadius: 0,
-                        ),
+                        BoxShadow(color: const Color(0xFF3B82F6).withOpacity(0.4), blurRadius: 40, spreadRadius: 0),
                       ],
                     ),
                     child: Material(
@@ -167,12 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icons.mic,
                             size: 48,
                             color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 8,
-                              ),
-                            ],
+                            shadows: [Shadow(color: Colors.black.withOpacity(0.2), blurRadius: 8)],
                           ),
                         ),
                       ),
@@ -192,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: BlocBuilder<CalendarCubit, CalendarState>(
                 builder: (context, state) {
                   final todayEvents = _getTodayEvents(state.events);
-                  
+
                   if (todayEvents.isEmpty) {
                     return const SizedBox.shrink();
                   }
@@ -220,10 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: EdgeInsets.only(right: index < todayEvents.length - 1 ? 12 : 0),
-                              child: _TodayEventCard(
-                                event: todayEvents[index],
-                                index: index,
-                              ),
+                              child: _TodayEventCard(event: todayEvents[index], index: index),
                             );
                           },
                         ),
@@ -250,7 +219,7 @@ class _TodayEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final startTimed = event.start?.dateTime;
     final endTimed = event.end?.dateTime;
-    
+
     final bool isTimed = startTimed != null || endTimed != null;
     final DateTime start = (startTimed ?? event.start?.date ?? DateTime.now()).toLocal();
     final DateTime? end = endTimed?.toLocal();
@@ -258,7 +227,7 @@ class _TodayEventCard extends StatelessWidget {
     final String timeText = isTimed && end != null
         ? '${DateFormat('HH:mm').format(start)} - ${DateFormat('HH:mm').format(end)}'
         : 'Весь день';
-    
+
     final int minutesUntil = isTimed ? start.difference(DateTime.now()).inMinutes : 0;
 
     // Перевірка чи подія не пізніше 3:00 наступного дня
@@ -276,74 +245,56 @@ class _TodayEventCard extends StatelessWidget {
     ];
     final gradient = gradients[index % gradients.length];
 
-    return Container(
-      width: 280,
-      constraints: const BoxConstraints(minHeight: 140),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: gradient,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return GestureDetector(
+      onTap: () {
+        context.push('/event-details', extra: event);
+      },
+      child: Container(
+        width: 280,
+        constraints: const BoxConstraints(minHeight: 140),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: gradient, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderRadius: BorderRadius.circular(20),
         ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(
-                Icons.calendar_today,
-                size: 24,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  event.summary ?? '(Без назви)',
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (shouldShowTimeUntil)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.calendar_today, size: 24, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(
                   child: Text(
-                    minutesUntil < 60
-                        ? 'За ${minutesUntil} хв'
-                        : 'За ${(minutesUntil / 60).round()} год',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                    event.summary ?? '(Без назви)',
+                    style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (shouldShowTimeUntil)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      minutesUntil < 60 ? 'За ${minutesUntil} хв' : 'За ${(minutesUntil / 60).round()} год',
+                      style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.white),
                     ),
                   ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            timeText,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.white.withOpacity(0.9),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              timeText,
+              style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white.withOpacity(0.9)),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-

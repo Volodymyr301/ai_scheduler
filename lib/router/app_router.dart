@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:googleapis/calendar/v3.dart' as gcal;
 import '../features/authentication/cubit/authentication_cubit.dart';
 import '../features/calendar/view/calendar_screen.dart';
 import '../features/home/view/home_screen.dart';
 import '../features/settings/view/settings_screen.dart';
 import '../features/navigation/view/bottom_navigation_scaffold.dart';
+import '../features/event_details/view/event_details_screen.dart';
 
 class AppRouter {
   static GoRouter create(AuthenticationCubit authCubit) {
@@ -43,6 +45,14 @@ class AppRouter {
               ],
             ),
           ],
+        ),
+        GoRoute(
+          path: '/event-details',
+          name: 'event-details',
+          builder: (context, state) {
+            final event = state.extra as gcal.Event;
+            return EventDetailsScreen(event: event);
+          },
         ),
       ],
     );

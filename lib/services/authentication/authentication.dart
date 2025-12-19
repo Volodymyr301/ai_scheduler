@@ -9,8 +9,8 @@ class AuthenticationService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: <String>[
       'email',
-      'https://www.googleapis.com/auth/calendar.readonly',
-      'https://www.googleapis.com/auth/calendar.events.readonly',
+      'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/calendar.events',
     ],
   );
 

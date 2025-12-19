@@ -40,6 +40,16 @@ class CalendarService {
       nextPageToken: events.nextPageToken,
     );
   }
+
+  Future<gcal.Event> updateEvent(gcal.Event event) async {
+    final api = await _api();
+    final updatedEvent = await api.events.update(
+      event,
+      'primary',
+      event.id!,
+    );
+    return updatedEvent;
+  }
 }
 
 
