@@ -10,7 +10,7 @@ class VoiceInputScreen extends StatefulWidget {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Voice Input',
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withOpacity(0.3),
       transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (context, animation, secondaryAnimation) {
         return const VoiceInputScreen();
@@ -40,8 +40,9 @@ class VoiceInputScreen extends StatefulWidget {
 }
 
 class _VoiceInputScreenState extends State<VoiceInputScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _pulseController;
+  late AnimationController _voiceController;
   late Animation<double> _pulseAnimation;
   late Animation<double> _glowAnimation;
   late Animation<double> _dot1Animation;
@@ -52,6 +53,11 @@ class _VoiceInputScreenState extends State<VoiceInputScreen>
   void initState() {
     super.initState();
     _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _voiceController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat(); // No reverse - just continuous forward loop
@@ -89,7 +95,7 @@ class _VoiceInputScreenState extends State<VoiceInputScreen>
         tween: ConstantTween<double>(0.0),
         weight: 75.0,
       ),
-    ]).animate(_pulseController);
+    ]).animate(_voiceController);
 
     // Dot 2: jumps after dot 1 (25-50%)
     _dot2Animation = TweenSequence<double>([
@@ -112,7 +118,7 @@ class _VoiceInputScreenState extends State<VoiceInputScreen>
         tween: ConstantTween<double>(0.0),
         weight: 50.0,
       ),
-    ]).animate(_pulseController);
+    ]).animate(_voiceController);
 
     // Dot 3: jumps after dot 2 (50-75%)
     _dot3Animation = TweenSequence<double>([
@@ -135,12 +141,13 @@ class _VoiceInputScreenState extends State<VoiceInputScreen>
         tween: ConstantTween<double>(0.0),
         weight: 25.0,
       ),
-    ]).animate(_pulseController);
+    ]).animate(_voiceController);
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
+    _voiceController.dispose();
     super.dispose();
   }
 
@@ -196,7 +203,7 @@ class _VoiceInputScreenState extends State<VoiceInputScreen>
                   children: [
                     // Animated microphone with glow
                     AnimatedBuilder(
-                      animation: _pulseController,
+                      animation: _voiceController,
                       builder: (context, child) {
                         return Stack(
                           alignment: Alignment.center,
