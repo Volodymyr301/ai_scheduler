@@ -3,13 +3,13 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 
 class AudioOutput {
   void init() async {
-    await SoLoud.instance.init(sampleRate: 24000, channels: Channels.mono);
+    await SoLoud.instance.init(sampleRate: 16000, channels: Channels.mono);
   }
 
   void play(Uint8List audioChunk) async {
     final audioOutputStream = SoLoud.instance.setBufferStream(
       bufferingType: BufferingType.released,
-      bufferingTimeNeeds: 0,
+      bufferingTimeNeeds: 1,
       format: BufferType.s16le,
     );
 
@@ -19,6 +19,6 @@ class AudioOutput {
 
     SoLoud.instance.setDataIsEnded(audioOutputStream);
 
-    SoLoud.instance.stop(handle);
+    // SoLoud.instance.stop(handle);
   }
 }

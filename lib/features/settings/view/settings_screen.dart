@@ -21,11 +21,7 @@ class SettingsScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Text(
                 'Налаштування',
-                style: GoogleFonts.inter(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFFF8FAFC),
-                ),
+                style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w600, color: const Color(0xFFF8FAFC)),
               ),
             ),
             Expanded(
@@ -59,22 +55,12 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.all(3),
                           child: Container(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFF0F172A),
-                            ),
+                            decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFF0F172A)),
                             padding: const EdgeInsets.all(3),
                             child: ClipOval(
                               child: user.photoUrl != null
-                                  ? Image.network(
-                                      user.photoUrl!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      size: 50,
-                                      color: Color(0xFF94A3B8),
-                                    ),
+                                  ? Image.network(user.photoUrl!, fit: BoxFit.cover)
+                                  : const Icon(Icons.person, size: 50, color: Color(0xFF94A3B8)),
                             ),
                           ),
                         ),
@@ -207,25 +193,15 @@ class _CalendarCard extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 72),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(20),
-      ),
+      decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(20)),
       child: Row(
         children: [
           // Calendar Icon
           Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: 24,
-            ),
+            decoration: BoxDecoration(color: iconColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+            child: Icon(icon, color: iconColor, size: 24),
           ),
           const SizedBox(width: 16),
           // Calendar Info
@@ -235,20 +211,12 @@ class _CalendarCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFF8FAFC),
-                  ),
+                  style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFFF8FAFC)),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   status,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    color: statusColor,
-                  ),
+                  style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w400, color: statusColor),
                 ),
               ],
             ),
@@ -277,12 +245,7 @@ class _SettingsTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool isDestructive;
 
-  const _SettingsTile({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.isDestructive = false,
-  });
+  const _SettingsTile({required this.icon, required this.title, required this.onTap, this.isDestructive = false});
 
   @override
   Widget build(BuildContext context) {
@@ -291,17 +254,10 @@ class _SettingsTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.only(bottom: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E293B),
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(16)),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: isDestructive ? const Color(0xFFEF4444) : const Color(0xFF94A3B8),
-              size: 24,
-            ),
+            Icon(icon, color: isDestructive ? const Color(0xFFEF4444) : const Color(0xFF94A3B8), size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -313,16 +269,10 @@ class _SettingsTile extends StatelessWidget {
                 ),
               ),
             ),
-            if (!isDestructive)
-              const Icon(
-                Icons.chevron_right,
-                color: Color(0xFF64748B),
-                size: 20,
-              ),
+            if (!isDestructive) const Icon(Icons.chevron_right, color: Color(0xFF64748B), size: 20),
           ],
         ),
       ),
     );
   }
 }
-
