@@ -230,12 +230,10 @@ class _TodayEventCard extends StatelessWidget {
 
     final int minutesUntil = isTimed ? start.difference(DateTime.now()).inMinutes : 0;
 
-    // Перевірка чи подія не пізніше 3:00 наступного дня
     final now = DateTime.now();
     final tomorrow3am = DateTime(now.year, now.month, now.day + 1, 3, 0);
     final bool shouldShowTimeUntil = isTimed && minutesUntil > 0 && start.isBefore(tomorrow3am);
 
-    // Градієнти для карток
     final List<List<Color>> gradients = [
       [const Color(0xFF3B82F6), const Color(0xFF2563EB)],
       [const Color(0xFF8B5CF6), const Color(0xFF7C3AED)],

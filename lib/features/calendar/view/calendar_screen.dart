@@ -355,20 +355,16 @@ class _EventListItem extends StatelessWidget {
     final String timeText = isTimed ? _formatTime(start, end) : 'Весь день';
     final int minutesUntil = isTimed ? start.difference(DateTime.now()).inMinutes : 0;
 
-    // Перевірка чи подія не пізніше 3:00 наступного дня
     final now = DateTime.now();
     final tomorrow3am = DateTime(now.year, now.month, now.day + 1, 3, 0);
     final bool shouldShowTimeUntil = isTimed && minutesUntil > 0 && start.isBefore(tomorrow3am);
 
-    // Визначення чи подія сьогодні
     final today = DateTime(now.year, now.month, now.day);
     final eventDate = DateTime(start.year, start.month, start.day);
     final bool isToday = eventDate.isAtSameMomentAs(today);
 
-    // Форматування дати
     final String dateText = isToday ? 'Сьогодні' : _formatDate(start);
 
-    // Різні кольори для checkbox
     final List<Color> checkboxColors = [
       const Color(0xFF3B82F6),
       const Color(0xFF8B5CF6),

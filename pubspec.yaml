@@ -41,13 +41,18 @@ dependencies:
   # Flutter widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used
   # with the bloc state management package.
   flutter_bloc: ^9.1.1
+
+  # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
   equatable: ^2.0.5
 
   # A declarative router for Flutter based on Navigation 2 supporting deep linking, data-driven routes and more
   go_router: ^16.3.0
 
-  #
+  # Annotations for the freezed code-generator. This package does nothing without freezed too.
   freezed_annotation: ^3.1.0
+
+  # injector is a simple to use and lightweight dependency injection library for dart
+  injector: ^4.0.0
 
   # Google Sign-In and Google Calendar API
   google_sign_in: ^6.2.1
@@ -55,6 +60,13 @@ dependencies:
   http: ^1.2.2
   intl: ^0.19.0
   google_fonts: ^6.2.1
+
+  # Audio recorder from microphone to file or stream with multiple codecs, bit rate and sampling rate options.
+  record: ^6.1.2
+
+  # A low-level audio plugin for Flutter, mainly meant for games and immersive apps. Based on the SoLoud (C++) audio
+  # engine.
+  flutter_soloud: ^3.4.7
 
 
 dev_dependencies:
@@ -71,9 +83,8 @@ dev_dependencies:
   # A builder that supports generated strongly-typed route helpers for package:go_router
   go_router_builder: ^4.1.1
 
-  # 
+  # Code generation for immutable classes that has a simple syntax/API without compromising on the features.
   freezed: ^3.2.3
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
