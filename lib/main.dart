@@ -1,14 +1,22 @@
+import 'package:ai_scheduler/dependency_injection.dart' show registerDependencies;
+import 'package:ai_scheduler/services/audio_output/audio_output.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injector/injector.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'features/authentication/cubit/authentication_cubit.dart';
 import 'features/calendar/cubit/calendar_cubit.dart';
 import 'router/app_router.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('uk', null);
+
+  registerDependencies();
+  final audioOutput = Injector.appInstance.get<AudioOutput>();
+
+  audioOutput.init();
+
   runApp(const MyApp());
 }
 
@@ -32,9 +40,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp.router(
         title: 'AI Scheduler',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
         routerConfig: _router,
       ),
     );
