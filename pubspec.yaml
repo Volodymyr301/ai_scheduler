@@ -68,6 +68,9 @@ dependencies:
   # engine.
   flutter_soloud: ^3.4.7
 
+  # A simple WebSocket client for Dart which includes automatic reconnection logic.
+  web_socket_client: ^0.2.1
+
 
 dev_dependencies:
   flutter_test:

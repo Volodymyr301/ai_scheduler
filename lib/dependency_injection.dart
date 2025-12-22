@@ -1,5 +1,6 @@
 import 'package:ai_scheduler/services/audio_input/audio_input.dart';
 import 'package:ai_scheduler/services/audio_output/audio_output.dart';
+import 'package:ai_scheduler/services/web_socket/web_socket.dart';
 import 'package:injector/injector.dart';
 
 void registerDependencies() {
@@ -11,5 +12,9 @@ void registerDependencies() {
 
   injector.registerSingleton<AudioOutput>(() {
     return AudioOutput();
+  });
+
+  injector.registerSingleton<CustomWebSocketClient>(() {
+    return CustomWebSocketClient();
   });
 }
