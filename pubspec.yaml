@@ -71,6 +71,9 @@ dependencies:
   # A simple WebSocket client for Dart which includes automatic reconnection logic.
   web_socket_client: ^0.2.1
 
+  # Classes and helper functions that support JSON code generation via the `json_serializable` package.
+  json_annotation: ^4.9.0
+
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +91,12 @@ dev_dependencies:
 
   # Code generation for immutable classes that has a simple syntax/API without compromising on the features.
   freezed: ^3.2.3
+
+  # Automatically generate code for converting to and from JSON by annotating Dart classes.
+  json_serializable: ^6.11.2
+
+  # A build system for Dart code generation and modular compilation.
+  build_runner: ^2.10.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
