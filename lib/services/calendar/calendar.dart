@@ -11,6 +11,7 @@ class CalendarEventsResult {
 
 class CalendarService {
   CalendarService._();
+
   static final CalendarService instance = CalendarService._();
 
   Future<gcal.CalendarApi> _api() async {
@@ -35,21 +36,18 @@ class CalendarService {
       timeMin: (timeMin ?? now).toUtc(),
       pageToken: pageToken,
     );
-    return CalendarEventsResult(
-      events: events.items ?? <gcal.Event>[],
-      nextPageToken: events.nextPageToken,
-    );
+    return CalendarEventsResult(events: events.items ?? <gcal.Event>[], nextPageToken: events.nextPageToken);
+  }
+
+  Future<gcal.Event> addEvent(gcal.Event event) async {
+    final api = await _api();
+    final updatedEvent = await api.events.insert(event, 'primary');
+    return updatedEvent;
   }
 
   Future<gcal.Event> updateEvent(gcal.Event event) async {
     final api = await _api();
-    final updatedEvent = await api.events.update(
-      event,
-      'primary',
-      event.id!,
-    );
+    final updatedEvent = await api.events.update(event, 'primary', event.id!);
     return updatedEvent;
   }
 }
-
-
