@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:ai_scheduler/features/voice/models/server_response_dto.dart' show ResponseDto;
+import 'package:ai_scheduler/features/assistant/models/server_response_dto.dart' show ResponseDto;
 import 'package:ai_scheduler/services/audio_input/audio_input.dart';
 import 'package:ai_scheduler/services/calendar/calendar.dart' show CalendarService;
 import 'package:ai_scheduler/services/web_socket/web_socket.dart';

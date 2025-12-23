@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:ai_scheduler/features/voice/cubit/assistant_cubit.dart' show AssistantCubit, AssistantState;
+import 'package:ai_scheduler/features/assistant/cubit/assistant_cubit.dart' show AssistantCubit, AssistantState;
 import 'package:ai_scheduler/services/calendar/calendar.dart' show CalendarService;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

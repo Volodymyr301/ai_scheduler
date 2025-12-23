@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/calendar_cubit.dart';
 import '../../authentication/cubit/authentication_cubit.dart';
 import '../../authentication/widgets/sign_in_prompt.dart';
-import '../../voice/view/voice_input_screen.dart';
+import '../../assistant/view/voice_input_screen.dart';
 import 'package:googleapis/calendar/v3.dart' as gcal;
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
