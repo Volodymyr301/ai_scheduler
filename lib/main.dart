@@ -28,7 +28,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final _authCubit = AuthenticationCubit();
+  late final _authCubit = AuthenticationCubit()..restoreSession();
   late final _router = AppRouter.create(_authCubit);
 
   @override
