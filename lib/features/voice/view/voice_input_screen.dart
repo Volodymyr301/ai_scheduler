@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:ai_scheduler/features/voice/cubit/assistant_cubit.dart' show AssistantCubit, AssistantState;
+import 'package:ai_scheduler/services/calendar/calendar.dart' show CalendarService;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,11 @@ class VoiceInputScreen extends StatefulWidget {
       transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (context, animation, secondaryAnimation) {
         return BlocProvider(
-          create: (context) =>
-              AssistantCubit(webSocketClient: Injector.appInstance.get(), audioInput: Injector.appInstance.get()),
+          create: (context) => AssistantCubit(
+            webSocketClient: Injector.appInstance.get(),
+            audioInput: Injector.appInstance.get(),
+            calendar: CalendarService.instance,
+          ),
           child: const VoiceInputScreen(),
         );
       },
